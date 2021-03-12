@@ -234,6 +234,7 @@ function updateTableFooter(tableId) {
 
 function updateCarbInRow(x) {
   let tRowRef = document.getElementById("tDish").tBodies[0].rows[x.rowIndex - 1];
+	if (tRowRef.cells[1].getElementsByTagName("input")[0].value < 1) tRowRef.cells[1].getElementsByTagName("input")[0].value = 100;
   tRowRef.cells[2].innerHTML = ((tRowRef.cells[1].getElementsByTagName("input")[0].value * parseFloat(tRowRef.cells[5].innerHTML))/100.0).toFixed(2);
   tRowRef.cells[3].innerHTML = (parseFloat(tRowRef.cells[2].innerHTML)/div12).toFixed(3);
 }
