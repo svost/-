@@ -209,10 +209,10 @@ function fillTMealBody(x) {
   let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
   dst.insertRow().innerHTML =
     "<td>Составное блюдо</td>"
-  + "<td><input type='number' value='" + src.rows[tbodyRowCount+1].cells[1].innerHTML + "' min='0' onchange='{updateTableFooter(\"tMeal\");}'></td>"
+  + "<td><input type='number' value='" + src.rows[tbodyRowCount+1].cells[1].innerHTML + "' min='1' onchange='{updateTableFooter(\"tMeal\");}'></td>"
 	+ "<td>" + src.rows[tbodyRowCount+1].cells[2].innerHTML + "</td>"
 	+ "<td>" + src.rows[tbodyRowCount+1].cells[3].innerHTML + "</td>"
-	+ "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
+	+ "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
 	+ "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
 }
 
@@ -271,10 +271,10 @@ for(let i = 0; i < items.length; i++) {
  			  // Insert a row at the end of table
  			  tbodyRef.insertRow().innerHTML =
  			      "<td>" + product[index] + "</td>"
- 			    + "<td><input type='number' value='100' min='0' onchange='{updateTableFooter(\"tMeal\");}'></td>"
+ 			    + "<td><input type='number' value='100' min='1' onchange='{updateTableFooter(\"tMeal\");}'></td>"
  			    + "<td>" + carbs[index] + "</td>"
  			    + "<td>" + (carbs[index]/div12).toFixed(3) + "</td>"
-          + "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
+          + "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
  			    + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
           updateTableFooter('tMeal');
       }
@@ -284,7 +284,7 @@ for(let i = 0; i < items.length; i++) {
  			  // Insert a row at the end of table
  			  tbodyRef.insertRow().innerHTML =
  			      "<td>" + product[index] + "</td>"
- 			    + "<td><input type='number' value='100' min='0' onchange='{updateCarbInRow(parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
+ 			    + "<td><input type='number' value='100' min='1' onchange='{updateCarbInRow(parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
  			    + "<td>" + carbs[index] + "</td>"
  			    + "<td>" + (carbs[index]/div12).toFixed(3) + "</td>"
           + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tDish\", parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
