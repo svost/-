@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<title>Расчёт хлебных единиц</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<style>
+
+input[type=number]{
+	font-family: inherit;
+  font-size: inherit;
+}
+
+table{
+	border: 1px solid #eee;
+	border-collapse: collapse;
+	table-layout: fixed;
+	margin-bottom: 20px;
+}
+
+table caption{
+	font-weight: bold;
+	padding: 5px;
+	background: #98aa8b;
+	border: 1px solid #dddddd;
+}
+
+table th{
+	font-weight: bold;
+	padding: 5px;
+	background: #efefef;
+	border: 1px solid #dddddd;
+}
+
+table td{
+	padding: 5px 10px;
+	text-align: left;
+	border-top: 1px solid #98aa8b;
+}
+
+table tbody tr:nth-child(odd){
+	background: #fff;
+}
+
+table tbody tr:nth-child(even){
+	background: #c3d4b7;
+}
+
+table tfoot{
+	font-weight: bold;
+}
+
+table tfoot td{
+	border: 1px solid #98aa8b;
+}
+
+#listBlock {
+  display: inline-block;
+}
+
+ul li{
+  margin: 5px;
+  border: 1px;
+}
+
+ul, #productUL {
+  list-style-type: none;
+}
+
+#prodItem:hover
+{
+  background: #a3f06c;
+  margin: 5px;
+}
+
+#productUL {
+  margin: 0;
+  padding: 5;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */
+  transform: rotate(90deg);
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<p>Углеводы - Carbohydrate</p>
+
+<table id="tDish">
+  <caption>Приготовить блюдо (клик по продукту из списка)</caption>
+  <thead>
+  <tr>
+    <th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th>Для кнопки</th><th>Углеводы<br>на 100г.</th><th>Покушать!</th>
+  </tr>
+  </thead>
+  <tbody></tbody>
+  <tfoot>
+  <tr>
+    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td><td><input type='button' value='В меню' onclick='{fillTMealBody(parentElement.parentElement); updateTableFooter(&quot;tMeal&quot;);}'></td>
+	</tr>
+  </tfoot>
+</table>
+
+<table id="tMeal">
+  <caption>Составить перекус (ctrl+клик по продукту из списка или по кнопке В меню)</caption>
+  <thead>
+  <tr>
+    <th>Перекус</th><th>Масса продукта</th><th>Углеводы</th><th>ХЕ</th><th>Установить ХЕ</th><th>Для кнопки</th>
+  </tr>
+  </thead>
+  <tbody></tbody>
+  <tfoot>
+  <tr>
+    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td>
+	</tr>
+  </tfoot>
+</table>
+
+<div id="listBlock">
+<ul id="productUL">
+  <li><span class="caret">Каши</span><ul class="nested">
+      <li id="prodItem" data-c="60.0">Хлопья гречневые ЯсноСолнышко</li>
+      <li id="prodItem" data-c="72.0">Хлопья из полбы Агро-Альянс</li>
+      <li id="prodItem" data-c="78.33">Хлопья кукурзные Мистраль</li>
+      <li id="prodItem" data-c="60.0">Хлопья овсяные ЯсноСолнышко</li>
+      <li id="prodItem" data-c="74.0">Хлопья рисовые ЯсноСолнышко</li>
+    </ul></li>
+  <li><span class="caret">Молочные продукты</span><ul class="nested">
+	    <li id="prodItem" data-c="0.0">Вода</li>
+      <li id="prodItem" data-c="0.8">Масло сливочное Вкуснотеево 82.5%</li>
+      <li id="prodItem" data-c="0.9">Масло сливочное Простоквашино 82%</li>
+      <li id="prodItem" data-c="4.7">Молоко</li>
+      <li id="prodItem" data-c="4.0">Кефир</li>
+	    <li id="prodItem" data-c="4.0">Ацидофилин Олония 2.5%</li>
+	    <li id="prodItem" data-c="2.9">Сметана Брест-Литовск 20%</li>
+	    <li id="prodItem" data-c="2.5">Сметана Простоквашино 20%</li>
+      <li id="prodItem" data-c="3.0">Творог Олония 5%</li>
+    </ul></li>
+  <li><span class="caret">Мучные продукты</span><ul class="nested">
+      <li id="prodItem" data-c="85.0">Крахмал кукурузный Haas</li>
+      <li id="prodItem" data-c="69.7">Макароны Barilla</li>
+      <li id="prodItem" data-c="70.6">Мука Селяночка пшеничная ВС</li>
+      <li id="prodItem" data-c="60.0">Мука Увелка цельнозерновая</li>
+      <li id="prodItem" data-c="39.9">Хлеб ржаной</li>
+      <li id="prodItem" data-c="50.0">Хлеб бородинский</li>
+	    <li id="prodItem" data-c="57.1">Хлебцы молодцы Витамин+Иммунитет</li>
+    </ul></li>
+  <li><span class="caret">Крупы</span><ul class="nested">
+      <li id="prodItem" data-c="68.0">Греча Тёплые традиции</li>
+      <li id="prodItem" data-c="57.0">Нут Мистраль</li>
+      <li id="prodItem" data-c="62.0">Овёс резаный Myllyn Paras</li>
+      <li id="prodItem" data-c="73.0">Полба цельнозерновая Увелка</li>
+      <li id="prodItem" data-c="67.4">Пшено Мистраль</li>
+      <li id="prodItem" data-c="76.0">Рис Агро-Альянс жасмин</li>
+      <li id="prodItem" data-c="60.0">Толокно овсяное С.Пудовъ</li>
+    </ul></li>
+  <li><span class="caret">Овощи</span><ul class="nested">
+      <li id="prodItem" data-c="18.4">Горох зелёный замороженный Лента</li>
+    </ul></li>
+  <li><span class="caret">Кондитерские изделия</span><ul class="nested">
+      <li id="prodItem" data-c="100.0">Сахар белый Продимпекс</li>
+      <li id="prodItem" data-c="96.0">Сахар тростниковый Мусковадо тёмный</li>
+    </ul></li>
+</ul>
+</div>
+
+<script>
+const div12 = 12.0;
+
+var toggler = document.getElementsByClassName("caret");
+
+function updateMealWeight(x) {
+  let tBref = document.getElementById("tMeal").tBodies[0];
+  const xeAmount = parseFloat(tBref.rows[x.rowIndex-1].cells[4].getElementsByTagName('select')[0].value);
+  tBref.rows[x.rowIndex-1].cells[1].getElementsByTagName('input')[0].value = Math.round((tBref.rows[x.rowIndex-1].cells[1].getElementsByTagName("input")[0].value * xeAmount)/parseFloat(tBref.rows[x.rowIndex-1].cells[3].innerHTML));
+  tBref.rows[x.rowIndex-1].cells[2].innerHTML = (xeAmount * div12).toFixed(1);
+  tBref.rows[x.rowIndex-1].cells[3].innerHTML = xeAmount;
+}
+
+function fillTMealBody(x) {
+  const src = document.getElementById("tDish");
+  const tbodyRowCount = src.tBodies[0].rows.length;
+  let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
+  dst.insertRow().innerHTML =
+    "<td>Составное блюдо</td>"
+  + "<td><input type='number' value='" + src.rows[tbodyRowCount+1].cells[1].innerHTML + "' min='0' onchange='{updateTableFooter(\"tMeal\");}'></td>"
+	+ "<td>" + src.rows[tbodyRowCount+1].cells[2].innerHTML + "</td>"
+	+ "<td>" + src.rows[tbodyRowCount+1].cells[3].innerHTML + "</td>"
+	+ "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
+	+ "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
+}
+
+function updateTableFooter(tableId) {
+  let table = document.getElementById(tableId);
+  const tbodyRowCount = table.tBodies[0].rows.length;
+  let sum = 0;
+  for(let i = 0; i < tbodyRowCount; i++) {
+	  sum = sum + parseInt(table.tBodies[0].rows[i].cells[1].getElementsByTagName("input")[0].value, 10);
+  }
+  table.rows[tbodyRowCount + 1].cells[1].innerHTML = sum;
+  sum = 0;
+  for(let i = 0; i < tbodyRowCount; i++) {
+    sum = sum + parseFloat(table.tBodies[0].rows[i].cells[2].innerHTML);
+  }
+  table.rows[tbodyRowCount + 1].cells[2].innerHTML = (sum).toFixed(2);
+  table.rows[tbodyRowCount + 1].cells[3].innerHTML = (sum/div12).toFixed(3);
+}
+
+function updateCarbInRow(x) {
+  let tRowRef = document.getElementById("tDish").tBodies[0].rows[x.rowIndex - 1];
+  tRowRef.cells[2].innerHTML = ((tRowRef.cells[1].getElementsByTagName("input")[0].value * parseFloat(tRowRef.cells[5].innerHTML))/100.0).toFixed(2);
+  tRowRef.cells[3].innerHTML = (parseFloat(tRowRef.cells[2].innerHTML)/div12).toFixed(3);
+}
+
+function delRow(tableId, x) {
+  document.getElementById(tableId).deleteRow(x.rowIndex);
+}
+
+for (let i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
+
+let items = document.querySelectorAll("#productUL #prodItem");
+let product = [],
+    carbs = [];
+
+// add values to the array
+for(let i = 0; i < items.length; i++) {
+  product.push(items[i].innerHTML);
+	carbs.push(items[i].getAttribute("data-c"));
+}
+
+// get selected element index
+for(let i = 0; i < items.length; i++) {
+  items[i].onclick = function(event){
+    const index = product.indexOf(this.innerHTML);
+    if (index != -1) {
+
+      if (event.ctrlKey) {
+        // Заполняем данными строку таблицы tMeal
+	      let tbodyRef = document.getElementById('tMeal').getElementsByTagName('tbody')[0];
+ 			  // Insert a row at the end of table
+ 			  tbodyRef.insertRow().innerHTML =
+ 			      "<td>" + product[index] + "</td>"
+ 			    + "<td><input type='number' value='100' min='0' onchange='{updateTableFooter(\"tMeal\");}'></td>"
+ 			    + "<td>" + carbs[index] + "</td>"
+ 			    + "<td>" + (carbs[index]/div12).toFixed(3) + "</td>"
+          + "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
+ 			    + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
+          updateTableFooter('tMeal');
+      }
+      else {
+ 			  // Заполняем данными строку таблицы tDish
+ 			  let tbodyRef = document.getElementById('tDish').getElementsByTagName('tbody')[0];
+ 			  // Insert a row at the end of table
+ 			  tbodyRef.insertRow().innerHTML =
+ 			      "<td>" + product[index] + "</td>"
+ 			    + "<td><input type='number' value='100' min='0' onchange='{updateCarbInRow(parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
+ 			    + "<td>" + carbs[index] + "</td>"
+ 			    + "<td>" + (carbs[index]/div12).toFixed(3) + "</td>"
+          + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tDish\", parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
+ 			    + "<td>" + carbs[index] + "</td>"
+ 			    + "<td></td>";
+          updateTableFooter('tDish');
+      }
+    }
+ 	};
+}
+
+</script>
+</body>
+</html>
