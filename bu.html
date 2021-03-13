@@ -184,6 +184,7 @@ ul, #productUL {
     </ul></li>
   <li><span class="caret">Овощи</span><ul class="nested">
       <li id="prodItem" data-c="18.4">Горох зелёный замороженный Лента</li>
+			<li id="prodItem" data-c="7.7">Тыква</li>
     </ul></li>
   <li><span class="caret">Кондитерские изделия</span><ul class="nested">
       <li id="prodItem" data-c="100.0">Сахар белый Продимпекс</li>
@@ -206,13 +207,23 @@ function updateMealWeight(x) {
   tBref.rows[x.rowIndex-1].cells[3].innerHTML = xeAmount;
 }
 
+function processWChange(x) {
+  let optionref = x.parentElement.parentElement.cells[4].getElementsByTagName("option")[0];
+	if (x.validity.valid) {
+		updateTableFooter("tMeal");
+  }
+	else {
+		// TODO: hide option object alert(optionref.style);
+	}
+}
+
 function fillTMealBody(x) {
   const src = document.getElementById("tDish");
   const tbodyRowCount = src.tBodies[0].rows.length;
   let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
   dst.insertRow().innerHTML =
     "<td>Составное блюдо</td>"
-  + "<td><input type='number' value='" + src.rows[tbodyRowCount+1].cells[1].innerHTML + "' min='1' onchange='{updateTableFooter(\"tMeal\");}'></td>"
+  + "<td><input type='number' value='" + src.rows[tbodyRowCount+1].cells[1].innerHTML + "' min='1' onchange='{processWChange(this);}'></td>"
 	+ "<td>" + src.rows[tbodyRowCount+1].cells[2].innerHTML + "</td>"
 	+ "<td>" + src.rows[tbodyRowCount+1].cells[3].innerHTML + "</td>"
 	+ "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
@@ -237,7 +248,7 @@ function updateTableFooter(tableId) {
 
 function updateCarbInRow(x) {
   let tRowRef = document.getElementById("tDish").tBodies[0].rows[x.rowIndex - 1];
-	if (tRowRef.cells[1].getElementsByTagName("input")[0].value < 1) tRowRef.cells[1].getElementsByTagName("input")[0].value = 100;
+	if (tRowRef.cells[1].getElementsByTagName("input")[0].validity.valid === false) tRowRef.cells[1].getElementsByTagName("input")[0].value = 100;
   tRowRef.cells[2].innerHTML = ((tRowRef.cells[1].getElementsByTagName("input")[0].value * parseFloat(tRowRef.cells[5].innerHTML))/100.0).toFixed(2);
   tRowRef.cells[3].innerHTML = (parseFloat(tRowRef.cells[2].innerHTML)/div12).toFixed(3);
 }
