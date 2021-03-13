@@ -192,7 +192,7 @@ ul, #productUL {
 			<li id="prodItem" data-c="7.7">Тыква</li>
 			<li id="prodItem" data-c="4.0">Фасоль зелёная стручковая зам. 4Сезона</li>
     </ul></li>
-		<li><span class="caret">Соки, пюре</span><ul class="nested">
+	<li><span class="caret">Соки, пюре</span><ul class="nested">
 	      <li id="prodItem" data-c="9.0">Пюре яблочное ФрутоНяня</li>
 				<li id="prodItem" data-c="11.2">Сок яблочный осветлённый ФрутоНяня</li>
 	    </ul></li>
@@ -218,12 +218,13 @@ function updateMealWeight(x) {
 }
 
 function processWChange(x) {
-  let optionref = x.parentElement.parentElement.cells[4].getElementsByTagName("option")[0];
+  let selectref = x.parentElement.parentElement.cells[4].getElementsByTagName("select")[0];
 	if (x.validity.valid) {
+		if (selectref.style.display === "none")	selectref.style.display = "block";
 		updateTableFooter("tMeal");
   }
 	else {
-		// TODO: hide option object alert(optionref.style);
+		selectref.style.display = "none";
 	}
 }
 
