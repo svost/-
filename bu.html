@@ -122,7 +122,7 @@ ul, #productUL {
   <tbody></tbody>
   <tfoot>
   <tr>
-    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td><td><input type='button' value='В меню' onclick='{fillTMealBody(parentElement.parentElement); updateTableFooter(&quot;tMeal&quot;);}'></td>
+    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td><td><input id="fillMealButton" type='button' disabled value='В меню' onclick='{fillTMealBody(parentElement.parentElement); updateTableFooter(&quot;tMeal&quot;);}'></td>
 	</tr>
   </tfoot>
 </table>
@@ -291,7 +291,12 @@ function updateCarbInRow(x) {
 }
 
 function delRow(tableId, x) {
+	let table = document.getElementById(tableId);
   document.getElementById(tableId).deleteRow(x.rowIndex);
+	if (tableId == "tDish" && table.tBodies[0].rows.length == 0) {
+	  let fillMealButton = document.querySelector('#fillMealButton');
+		fillMealButton.disabled = true;
+  }
 }
 
 let toggler = document.getElementsByClassName("caret");
@@ -336,6 +341,9 @@ for(let i = 0; i < items.length; i++) {
           updateTableFooter('tMeal');
       }
       else {
+				//if (document.getElementById("tDish").getElementsByTagName('tfoot')[0].getElementsByTagName('tr')[0].getElementsByTagName('input')[0].disabled == true);
+				let fillMealButton = document.querySelector('#fillMealButton');
+				if (fillMealButton.disabled == true) fillMealButton.disabled = false
  			  // Заполняем данными строку таблицы tDish
  			  let tbodyRef = document.getElementById('tDish').getElementsByTagName('tbody')[0];
  			  // Insert a row at the end of table
