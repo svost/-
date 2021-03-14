@@ -209,14 +209,14 @@ ul, #productUL {
 </div>
 
 <script>
-const div12 = 12.0;
+const carbInBu = 12.0;
 
 function updateMealWeight(x) {
   let tBref = document.getElementById("tMeal").tBodies[0];
 	let weightRef = document.getElementById("tMeal").tBodies[0].rows[x.rowIndex-1].cells[1].getElementsByTagName('input')[0];
   const xeAmount = parseFloat(tBref.rows[x.rowIndex-1].cells[4].getElementsByTagName('select')[0].value);
   weightRef.value = Math.round((weightRef.value * xeAmount)/parseFloat(tBref.rows[x.rowIndex-1].cells[3].innerHTML));
-  tBref.rows[x.rowIndex-1].cells[2].innerHTML = (xeAmount * div12).toFixed(1);
+  tBref.rows[x.rowIndex-1].cells[2].innerHTML = (xeAmount * carbInBu).toFixed(1);
   tBref.rows[x.rowIndex-1].cells[3].innerHTML = xeAmount;
 }
 
@@ -264,14 +264,14 @@ function updateTableFooter(tableId) {
     sum = sum + parseFloat(table.tBodies[0].rows[i].cells[2].innerHTML);
   }
   table.rows[tbodyRowCount + 1].cells[2].innerHTML = (sum).toFixed(2);
-  table.rows[tbodyRowCount + 1].cells[3].innerHTML = (sum/div12).toFixed(3);
+  table.rows[tbodyRowCount + 1].cells[3].innerHTML = (sum/carbInBu).toFixed(3);
 }
 
 function updateCarbInRow(x) {
   let tRowRef = document.getElementById("tDish").tBodies[0].rows[x.rowIndex - 1];
 	if (tRowRef.cells[1].getElementsByTagName("input")[0].validity.valid === false) tRowRef.cells[1].getElementsByTagName("input")[0].value = 100;
   tRowRef.cells[2].innerHTML = ((tRowRef.cells[1].getElementsByTagName("input")[0].value * parseFloat(tRowRef.cells[5].innerHTML))/100.0).toFixed(2);
-  tRowRef.cells[3].innerHTML = (parseFloat(tRowRef.cells[2].innerHTML)/div12).toFixed(3);
+  tRowRef.cells[3].innerHTML = (parseFloat(tRowRef.cells[2].innerHTML)/carbInBu).toFixed(3);
 }
 
 function delRow(tableId, x) {
@@ -311,7 +311,7 @@ for(let i = 0; i < items.length; i++) {
  			      "<td>" + product[index] + "</td>"
  			    + "<td><input type='number' value='100' min='1' onchange='{updateTableFooter(\"tMeal\");}'></td>"
  			    + "<td>" + carbs[index] + "</td>"
- 			    + "<td>" + (carbs[index]/div12).toFixed(3) + "</td>"
+ 			    + "<td>" + (carbs[index]/carbInBu).toFixed(3) + "</td>"
           + "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
  			    + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
 					if (carbs[index] == 0.0) {
@@ -327,7 +327,7 @@ for(let i = 0; i < items.length; i++) {
  			      "<td>" + product[index] + "</td>"
  			    + "<td><input type='number' value='100' min='1' onchange='{updateCarbInRow(parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
  			    + "<td>" + carbs[index] + "</td>"
- 			    + "<td>" + (carbs[index]/div12).toFixed(3) + "</td>"
+ 			    + "<td>" + (carbs[index]/carbInBu).toFixed(3) + "</td>"
           + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tDish\", parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
  			    + "<td>" + carbs[index] + "</td>"
  			    + "<td></td>";
