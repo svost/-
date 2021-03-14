@@ -110,7 +110,7 @@ ul, #productUL {
 </head>
 <body>
 
-<p>Углеводы - Carbohydrate</p>
+<p>Углеводов (Carbohydrate) в одной хлебной единице: <td><select id="carbInBuId" onchange='{updatecarbInBu(this);}'><option selected=true value=12>12</option><option value=11>11</option><option value=10>10</option></select></td></p>
 
 <table id="tDish">
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
@@ -209,7 +209,23 @@ ul, #productUL {
 </div>
 
 <script>
-const carbInBu = 12.0;
+let carbInBu = 12.0;
+
+function updatecarbInBu(x) {
+	carbInBu = document.getElementById("carbInBuId").value;
+	// recalc bu in tDish table
+	let tBref = document.getElementById('tDish').tBodies[0];
+	for(let i = 0; i < tBref.rows.length; i++) {
+		tBref.rows[i].cells[3].innerHTML = (parseFloat(tBref.rows[i].cells[2].innerHTML)/carbInBu).toFixed(3);
+	}
+	updateTableFooter("tDish");
+	// recalc bu in tMeal table
+	tBref = document.getElementById('tMeal').tBodies[0];
+	for(let i = 0; i < tBref.rows.length; i++) {
+		tBref.rows[i].cells[3].innerHTML = (parseFloat(tBref.rows[i].cells[2].innerHTML)/carbInBu).toFixed(3);
+	}
+	updateTableFooter("tMeal");
+}
 
 function updateMealWeight(x) {
   let tBref = document.getElementById("tMeal").tBodies[0];
