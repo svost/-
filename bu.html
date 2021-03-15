@@ -6,6 +6,10 @@
 <meta charset="utf-8">
 <style>
 
+.container{overflow:hidden;width:auto}
+.contcells{white-space:nowrap}
+.contcells div{width:auto;float:left;border:1px} /*display: inline-block; or float:left*/
+
 input[type=number]{
 	font-family: inherit;
   font-size: inherit;
@@ -113,6 +117,9 @@ ul, #productUL {
 
 <p>Углеводов (Carbohydrate) в одной хлебной единице: <td><select id="carbInBuId" onchange='{updatecarbInBu();}'><option selected=true value=12>12</option><option value=11>11</option><option value=10>10</option></select></td></p>
 
+<div class="container">
+<div class="contcells">
+<div>
 <table id="tDish">
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
   <thead>
@@ -127,7 +134,8 @@ ul, #productUL {
 	</tr>
   </tfoot>
 </table>
-
+</div>
+<div>
 <table id="tMeal">
   <caption>Составить перекус (ctrl+клик по продукту из списка или по кнопке В меню)</caption>
   <thead>
@@ -142,6 +150,9 @@ ul, #productUL {
 	</tr>
   </tfoot>
 </table>
+</div>
+</div>
+</div>
 
 <div id="listBlock">
 <ul id="productUL">
@@ -356,7 +367,6 @@ items.forEach(function(item){
           updateTableFooter('tMeal');
       }
       else {
-				//if (document.getElementById("tDish").getElementsByTagName('tfoot')[0].getElementsByTagName('tr')[0].getElementsByTagName('input')[0].disabled == true);
 				let fillMealButton = document.querySelector('#fillMealButton');
 				if (fillMealButton.disabled == true) fillMealButton.disabled = false
         // Заполняем данными строку таблицы tDish
