@@ -110,7 +110,7 @@ ul, #productUL {
 </head>
 <body>
 
-<p>Углеводов (Carbohydrate) в одной хлебной единице: <td><select id="carbInBuId" onchange='{updatecarbInBu(this);}'><option selected=true value=12>12</option><option value=11>11</option><option value=10>10</option></select></td></p>
+<p>Углеводов (Carbohydrate) в одной хлебной единице: <td><select id="carbInBuId" onchange='{updatecarbInBu();}'><option selected=true value=12>12</option><option value=11>11</option><option value=10>10</option></select></td></p>
 
 <table id="tDish">
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
@@ -122,7 +122,7 @@ ul, #productUL {
   <tbody></tbody>
   <tfoot>
   <tr>
-    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td><td><input id="fillMealButton" type='button' disabled value='В меню' onclick='{fillTMealBody(parentElement.parentElement); updateTableFooter(&quot;tMeal&quot;);}'></td>
+    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td><td><input id="fillMealButton" type='button' disabled value='В меню' onclick='{fillTMealBody(); updateTableFooter(&quot;tMeal&quot;);}'></td>
 	</tr>
   </tfoot>
 </table>
@@ -211,20 +211,15 @@ ul, #productUL {
 <script>
 let carbInBu = 12.0;
 
-function updatecarbInBu(x) {
+function updatecarbInBu() {
 	carbInBu = document.getElementById("carbInBuId").value;
-	// recalc bu in tDish table
-	let tBref = document.getElementById('tDish').tBodies[0];
-	for(let i = 0; i < tBref.rows.length; i++) {
-		tBref.rows[i].cells[3].innerHTML = (parseFloat(tBref.rows[i].cells[2].innerHTML)/carbInBu).toFixed(3);
-	}
-	updateTableFooter("tDish");
-	// recalc bu in tMeal table
-	tBref = document.getElementById('tMeal').tBodies[0];
-	for(let i = 0; i < tBref.rows.length; i++) {
-		tBref.rows[i].cells[3].innerHTML = (parseFloat(tBref.rows[i].cells[2].innerHTML)/carbInBu).toFixed(3);
-	}
-	updateTableFooter("tMeal");
+  ["tDish", "tMeal"].forEach(function(table) {
+		let tBref = document.getElementById(table).tBodies[0];
+		Array.prototype.forEach.call(tBref.rows, function(item) {
+			item.cells[3].innerHTML = (parseFloat(item.cells[2].innerHTML)/carbInBu).toFixed(3)
+	  });
+		updateTableFooter(table);
+  })
 }
 
 function updateMealWeight(x) {
@@ -251,7 +246,7 @@ function processWChange(x) {
 	}
 }
 
-function fillTMealBody(x) {
+function fillTMealBody() {
   const src = document.getElementById("tDish");
   const tbodyRowCount = src.tBodies[0].rows.length;
   let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
@@ -269,18 +264,15 @@ function fillTMealBody(x) {
 
 function updateTableFooter(tableId) {
   let table = document.getElementById(tableId);
-  const tbodyRowCount = table.tBodies[0].rows.length;
-  let sum = 0;
-  for(let i = 0; i < tbodyRowCount; i++) {
-		sum = sum + parseInt(table.tBodies[0].rows[i].cells[1].getElementsByTagName("input")[0].value, 10);
-  }
-  table.rows[tbodyRowCount + 1].cells[1].innerHTML = sum;
-  sum = 0;
-  for(let i = 0; i < tbodyRowCount; i++) {
-    sum = sum + parseFloat(table.tBodies[0].rows[i].cells[2].innerHTML);
-  }
-  table.rows[tbodyRowCount + 1].cells[2].innerHTML = (sum).toFixed(2);
-  table.rows[tbodyRowCount + 1].cells[3].innerHTML = (sum/carbInBu).toFixed(3);
+  let sum = Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
+	  return acc + parseInt(item.cells[1].getElementsByTagName("input")[0].value, 10)
+  },0);
+  table.lastElementChild.lastElementChild.cells[1].innerHTML = sum;
+  sum = Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
+	  return acc + parseFloat(item.cells[2].innerHTML)
+  },0);
+  table.lastElementChild.lastElementChild.cells[2].innerHTML = (sum).toFixed(2);
+  table.lastElementChild.lastElementChild.cells[3].innerHTML = (sum/carbInBu).toFixed(3);
 }
 
 function updateCarbInRow(x) {
@@ -293,7 +285,7 @@ function updateCarbInRow(x) {
 function delRow(tableId, x) {
 	let table = document.getElementById(tableId);
   document.getElementById(tableId).deleteRow(x.rowIndex);
-	if (tableId == "tDish" && table.tBodies[0].rows.length == 0) {
+  if (tableId == "tDish" && table.tBodies[0].rows.length == 0) {
 		let fillMealButton = document.querySelector('#fillMealButton');
 		fillMealButton.disabled = true;
   }
@@ -313,9 +305,9 @@ let product = [],
     carbs = [];
 
 // add values to the array
-items.forEach(function(items){
-  product.push(items.innerHTML);
-	carbs.push(items.getAttribute("data-c"));
+items.forEach(function(item){
+  product.push(item.innerHTML);
+	carbs.push(item.getAttribute("data-c"));
 })
 
 // get selected element index
