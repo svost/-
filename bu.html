@@ -13,7 +13,7 @@
 input[type=number]{
 	font-family: inherit;
   font-size: inherit;
-	width: 130px;
+	width: 100px;
 }
 
 table{
@@ -111,15 +111,15 @@ ul, #productUL {
 .active {
   display: block;
 }
+
+.fakebutton {border:solid transparent;background-color:transparent;overflow:hidden;background-repeat:no-repeat;outline:none;}
 </style>
 </head>
 <body>
 
 <p>Углеводов (Carbohydrate) в одной хлебной единице: <td><select id="carbInBuId" onchange='{updatecarbInBu();}'><option selected=true value=12>12</option><option value=11>11</option><option value=10>10</option></select></td></p>
 
-<div class="container">
-<div class="contcells">
-<div>
+<div class="container"><div class="contcells"><div>
 <table id="tDish">
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
   <thead>
@@ -146,13 +146,11 @@ ul, #productUL {
   <tbody></tbody>
   <tfoot>
   <tr>
-    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td>
+    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td><input class="fakebutton" type='button'</td>
 	</tr>
   </tfoot>
 </table>
-</div>
-</div>
-</div>
+</div></div></div>
 
 <div id="listBlock">
 <ul id="productUL">
