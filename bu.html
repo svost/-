@@ -291,14 +291,12 @@ function delRow(tableId, x) {
   }
 }
 
-let toggler = document.getElementsByClassName("caret");
-
-for (let i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function() {
+Array.prototype.forEach.call(document.getElementsByClassName("caret"), function(item) {
+	item.addEventListener("click", function() {
     this.parentElement.querySelector(".nested").classList.toggle("active");
     this.classList.toggle("caret-down");
-  });
-}
+	});
+});
 
 let items = document.querySelectorAll("#productUL #prodItem");
 let product = [],
