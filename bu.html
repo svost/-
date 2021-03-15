@@ -9,6 +9,7 @@
 input[type=number]{
 	font-family: inherit;
   font-size: inherit;
+	width: 130px;
 }
 
 table{
@@ -116,13 +117,13 @@ ul, #productUL {
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
   <thead>
   <tr>
-    <th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th>Для кнопки</th><th>Углеводы<br>на 100г.</th><th>Покушать!</th>
+    <th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th>Для кнопки</th><th>Углеводы<br>на 100г.</th>
   </tr>
   </thead>
   <tbody></tbody>
   <tfoot>
   <tr>
-    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td><td><input id="fillMealButton" type='button' disabled value='В меню' onclick='{fillTMealBody(); updateTableFooter(&quot;tMeal&quot;);}'></td>
+    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td><input id="fillMealButton" type='button' disabled value='В перекус' onclick='{fillTMealBody(); updateTableFooter(&quot;tMeal&quot;);}'></td><td></td>
 	</tr>
   </tfoot>
 </table>
@@ -131,7 +132,7 @@ ul, #productUL {
   <caption>Составить перекус (ctrl+клик по продукту из списка или по кнопке В меню)</caption>
   <thead>
   <tr>
-    <th>Перекус</th><th>Масса продукта</th><th>Углеводы</th><th>ХЕ</th><th>Установить ХЕ</th><th>Для кнопки</th>
+    <th>Перекус</th><th>Масса продукта</th><th>Углеводы</th><th>ХЕ</th><th>Установить<br>ХЕ</th><th>Для кнопки</th>
   </tr>
   </thead>
   <tbody></tbody>
@@ -367,8 +368,7 @@ items.forEach(function(item){
           + "<td>" + carbs[index] + "</td>"
           + "<td>" + (carbs[index]/carbInBu).toFixed(3) + "</td>"
           + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tDish\", parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
-          + "<td>" + carbs[index] + "</td>"
-          + "<td></td>";
+          + "<td>" + carbs[index] + "</td>";
           updateTableFooter('tDish');
       }
     }
