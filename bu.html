@@ -272,7 +272,7 @@ function updateTableFooter(tableId) {
   const tbodyRowCount = table.tBodies[0].rows.length;
   let sum = 0;
   for(let i = 0; i < tbodyRowCount; i++) {
-	  sum = sum + parseInt(table.tBodies[0].rows[i].cells[1].getElementsByTagName("input")[0].value, 10);
+		sum = sum + parseInt(table.tBodies[0].rows[i].cells[1].getElementsByTagName("input")[0].value, 10);
   }
   table.rows[tbodyRowCount + 1].cells[1].innerHTML = sum;
   sum = 0;
@@ -294,7 +294,7 @@ function delRow(tableId, x) {
 	let table = document.getElementById(tableId);
   document.getElementById(tableId).deleteRow(x.rowIndex);
 	if (tableId == "tDish" && table.tBodies[0].rows.length == 0) {
-	  let fillMealButton = document.querySelector('#fillMealButton');
+		let fillMealButton = document.querySelector('#fillMealButton');
 		fillMealButton.disabled = true;
   }
 }
@@ -313,10 +313,10 @@ let product = [],
     carbs = [];
 
 // add values to the array
-for(let i = 0; i < items.length; i++) {
-  product.push(items[i].innerHTML);
-	carbs.push(items[i].getAttribute("data-c"));
-}
+items.forEach(function(items){
+  product.push(items.innerHTML);
+	carbs.push(items.getAttribute("data-c"));
+})
 
 // get selected element index
 for(let i = 0; i < items.length; i++) {
