@@ -221,6 +221,17 @@ ul, #productUL {
 </div>
 
 <script>
+function addCustomHint(x) {
+	//alert(x);
+  x.addEventListener("input", function (event) {
+    if (x.validity.rangeUnderflow || x.validity.badInput || x.validity.typeMismatch || x.validity.stepMismatch) {
+      x.setCustomValidity("Введите целое число большее 0.");
+    } else {
+      x.setCustomValidity("");
+  }
+});
+}
+
 let carbInBu = 12.0;
 
 function updatecarbInBu() {
@@ -272,6 +283,7 @@ function fillTMealBody() {
 	if (src.rows[tbodyRowCount+1].cells[2].innerHTML == 0.00) {
 		dst.rows[dst.rows.length-1].cells[4].innerHTML = '';
 	}
+	addCustomHint(dst.rows[dst.rows.length-1].cells[1].getElementsByTagName("input")[0]);
 }
 
 function updateTableFooter(tableId) {
@@ -331,7 +343,7 @@ items.forEach(function(item){
         // Insert a row at the end of table
         tbodyRef.insertRow().innerHTML =
             "<td>" + product[index] + "</td>"
-          + "<td><input type='number' value='100' min='1' onchange='{updateTableFooter(\"tMeal\");}'></td>"
+          + "<td><input type='number' value='100' min='1' onchange='{processWChange(this);}'></td>"
           + "<td>" + carbs[index] + "</td>"
           + "<td>" + (carbs[index]/carbInBu).toFixed(3) + "</td>"
           + "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
@@ -339,6 +351,7 @@ items.forEach(function(item){
 					if (carbs[index] == 0.0) {
 						tbodyRef.rows[tbodyRef.rows.length-1].cells[4].innerHTML = '';
 					}
+					addCustomHint(tbodyRef.rows[tbodyRef.rows.length-1].cells[1].getElementsByTagName("input")[0]);
           updateTableFooter('tMeal');
       }
       else {
