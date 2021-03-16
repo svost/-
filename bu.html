@@ -48,7 +48,7 @@ ul, #productUL{list-style-type:none;}
 <div class="container"><div class="contcells"><div>
 <table id="tDish">
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
-  <thead><tr><th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th></th><th>Углеводы<br>на 100г.</th></tr></thead>
+  <thead><tr><th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th><input id="delRowsButton" type='button' disabled value='Удалить всё' onclick='{dellRows(&quot;tDish&quot;); updateTableFooter(&quot;tDish&quot;);}'></th><th>Углеводы<br>на 100г.</th></tr></thead>
   <tbody></tbody>
   <tfoot><tr><td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td><input id="fillMealButton" type='button' disabled value='В перекус' onclick='{fillTMealBody(); updateTableFooter(&quot;tMeal&quot;);}'></td><td></td></tr></tfoot>
 </table>
@@ -56,7 +56,7 @@ ul, #productUL{list-style-type:none;}
 <div>
 <table id="tMeal">
   <caption>Составить перекус (ctrl+клик по продукту из списка)</caption>
-  <thead><tr><th>Перекус</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th>Установить<br>ХЕ</th><th></th></tr></thead>
+  <thead><tr><th>Перекус</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th>Установить<br>ХЕ</th><th><input id="delRowsButton" type='button' disabled value='Удалить всё' onclick='{dellRows(&quot;tMeal&quot;); updateTableFooter(&quot;tMeal&quot;);}'></th></tr></thead>
   <tbody></tbody>
   <tfoot><tr><td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td></tr></tfoot>
 </table>
@@ -247,12 +247,29 @@ function updateCarbInRow(x) {
 }
 
 function delRow(tableId, x) {
-	let table = document.getElementById(tableId);
+	const table = document.getElementById(tableId);
   document.getElementById(tableId).deleteRow(x.rowIndex);
   if (tableId == "tDish" && table.tBodies[0].rows.length == 0) {
-		let fillMealButton = document.querySelector('#fillMealButton');
-		fillMealButton.disabled = true;
+		let btn = document.querySelector('#fillMealButton');
+		btn.disabled = true;
+		btn = document.getElementById(tableId).querySelector('#delRowsButton');
+		btn.disabled = true;
   }
+	if (tableId == "tMeal" && table.tBodies[0].rows.length == 0) {
+		let btn = document.getElementById(tableId).querySelector('#delRowsButton');
+		btn.disabled = true;
+  }
+}
+
+function dellRows(tableId) {
+	let tbodyRef = document.getElementById(tableId).tBodies[0];
+	tbodyRef.innerHTML = '';
+	let btn = document.getElementById(tableId).querySelector('#delRowsButton');
+	btn.disabled = true;
+	if (tableId == "tDish") {
+		btn = document.querySelector('#fillMealButton');
+		btn.disabled = true;
+	}
 }
 
 Array.prototype.forEach.call(document.getElementsByClassName("caret"), function(item) {
@@ -278,6 +295,8 @@ items.forEach(function(item){
     const index = product.indexOf(this.innerHTML);
     if (index != -1) {
       if (event.ctrlKey) {
+				let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
+				if (btn.disabled == true) btn.disabled = false
         // Заполняем данными строку таблицы tMeal
         let tbodyRef = document.getElementById('tMeal').getElementsByTagName('tbody')[0];
         // Insert a row at the end of table
@@ -295,8 +314,10 @@ items.forEach(function(item){
           updateTableFooter('tMeal');
       }
       else {
-				let fillMealButton = document.querySelector('#fillMealButton');
-				if (fillMealButton.disabled == true) fillMealButton.disabled = false
+				let btn = document.querySelector('#fillMealButton');
+				if (btn.disabled == true) btn.disabled = false
+				btn = document.getElementById('tDish').querySelector('#delRowsButton');
+				if (btn.disabled == true) btn.disabled = false
         // Заполняем данными строку таблицы tDish
         let tbodyRef = document.getElementById('tDish').getElementsByTagName('tbody')[0];
         // Insert a row at the end of table
