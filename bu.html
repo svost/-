@@ -112,7 +112,6 @@ ul, #productUL {
   display: block;
 }
 
-.fakebutton {border:solid transparent;background-color:transparent;overflow:hidden;background-repeat:no-repeat;outline:none;}
 </style>
 </head>
 <body>
@@ -146,7 +145,7 @@ ul, #productUL {
   <tbody></tbody>
   <tfoot>
   <tr>
-    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td><input class="fakebutton" type='button'</td>
+    <td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td></td><td></td>
 	</tr>
   </tfoot>
 </table>
@@ -231,6 +230,14 @@ ul, #productUL {
 </div>
 
 <script>
+
+window.onload = function() {
+	//костыль для стиля
+	const h = document.getElementById('tDish').rows[1].clientHeight;
+	let tMref = document.getElementById('tMeal');
+	tMref.rows[1].style.height = h + "px";
+}
+
 function addCustomHint(x) {
 	//alert(x);
   x.addEventListener("input", function (event) {
