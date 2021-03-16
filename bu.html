@@ -112,6 +112,8 @@ ul, #productUL {
   display: block;
 }
 
+.delbutton {padding-left: 0px;padding-right: 0px;}
+
 </style>
 </head>
 <body>
@@ -123,7 +125,7 @@ ul, #productUL {
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
   <thead>
   <tr>
-    <th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th>Для кнопки</th><th>Углеводы<br>на 100г.</th>
+    <th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th></th><th>Углеводы<br>на 100г.</th>
   </tr>
   </thead>
   <tbody></tbody>
@@ -136,10 +138,10 @@ ul, #productUL {
 </div>
 <div>
 <table id="tMeal">
-  <caption>Составить перекус (ctrl+клик по продукту из списка или по кнопке В меню)</caption>
+  <caption>Составить перекус (ctrl+клик по продукту из списка)</caption>
   <thead>
   <tr>
-    <th>Перекус</th><th>Масса продукта</th><th>Углеводы</th><th>ХЕ</th><th>Установить<br>ХЕ</th><th>Для кнопки</th>
+    <th>Перекус</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th>Установить<br>ХЕ</th><th></th>
   </tr>
   </thead>
   <tbody></tbody>
@@ -296,7 +298,7 @@ function fillTMealBody() {
 	+ "<td>" + src.rows[tbodyRowCount+1].cells[2].innerHTML + "</td>"
 	+ "<td>" + src.rows[tbodyRowCount+1].cells[3].innerHTML + "</td>"
 	+ "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
-	+ "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
+	+ "<td><input class='delbutton' type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
 	if (src.rows[tbodyRowCount+1].cells[2].innerHTML == 0.00) {
 		dst.rows[dst.rows.length-1].cells[4].innerHTML = '';
 	}
@@ -364,7 +366,7 @@ items.forEach(function(item){
           + "<td>" + carbs[index] + "</td>"
           + "<td>" + (carbs[index]/carbInBu).toFixed(3) + "</td>"
           + "<td><select onchange='{updateMealWeight(parentElement.parentElement); updateTableFooter(\"tMeal\");}'><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
-          + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
+          + "<td><input class='delbutton' type='button' value='Удалить строку' onclick='{delRow(\"tMeal\", parentElement.parentElement); updateTableFooter(\"tMeal\");}'></td>";
 					if (carbs[index] == 0.0) {
 						tbodyRef.rows[tbodyRef.rows.length-1].cells[4].innerHTML = '';
 					}
@@ -382,7 +384,7 @@ items.forEach(function(item){
           + "<td><input type='number' value='100' min='1' onchange='{updateCarbInRow(parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
           + "<td>" + carbs[index] + "</td>"
           + "<td>" + (carbs[index]/carbInBu).toFixed(3) + "</td>"
-          + "<td><input type='button' value='Удалить строку' onclick='{delRow(\"tDish\", parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
+          + "<td><input class='delbutton' type='button' value='Удалить строку' onclick='{delRow(\"tDish\", parentElement.parentElement); updateTableFooter(\"tDish\");}'></td>"
           + "<td>" + carbs[index] + "</td>";
           updateTableFooter('tDish');
       }
