@@ -50,7 +50,7 @@ ul, #productUL{list-style-type:none;}
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
   <thead><tr><th>Продукт</th><th>Масса<br>продукта</th><th>Углеводы</th><th>ХЕ</th><th><input id="delRowsButton" type='button' disabled value='Удалить всё' onclick='{dellRows(&quot;tDish&quot;); updateTableFooter(&quot;tDish&quot;);}'></th><th>Углеводы<br>на 100г.</th></tr></thead>
   <tbody></tbody>
-  <tfoot><tr><td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td><input id="fillMealButton" type='button' disabled value='В перекус' onclick='{fillTMealBody(); updateTableFooter(&quot;tMeal&quot;);}'></td><td></td></tr></tfoot>
+  <tfoot><tr><td>Итого суммарно</td><td>0</td><td>0</td><td>0.0</td><td><input id="fillMealButton" type='button' disabled value='В перекус'></td><td></td></tr></tfoot>
 </table>
 </div>
 <div>
@@ -224,6 +224,8 @@ function fillTMealBody() {
 		dst.rows[dst.rows.length-1].cells[4].innerHTML = '';
 	}
 	addCustomHint(dst.rows[dst.rows.length-1].cells[1].getElementsByTagName("input")[0]);
+	let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
+	if (btn.disabled == true) btn.disabled = false
 }
 
 function updateTableFooter(tableId) {
@@ -333,6 +335,20 @@ items.forEach(function(item){
     }
   };
 })
+
+function pageInit() {
+  let btn = document.getElementById('fillMealButton');
+  if (btn.addEventListener) {
+    // DOM2 standard
+    btn.addEventListener('click', ()=>{fillTMealBody(); updateTableFooter("tMeal");}, false);
+  }
+  else {
+    // Really old or non-standard browser, try DOM0
+    btn.onclick = ()=>{fillTMealBody(); updateTableFooter("tMeal");};
+  }
+}
+
+pageInit();
 
 </script>
 </body>
