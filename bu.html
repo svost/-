@@ -315,10 +315,7 @@ function fillTDishBodyFromList(idx) {
 }
 
 Array.prototype.forEach.call(document.getElementsByClassName("caret"), function(item) {
-	item.addEventListener("click", function() {
-    this.parentElement.querySelector(".nested").classList.toggle("active");
-    this.classList.toggle("caret-down");
-	});
+  addEvent(item, 'click', function(){this.parentElement.querySelector(".nested").classList.toggle("active"); this.classList.toggle("caret-down");});
 });
 
 let items = document.querySelectorAll("#productUL #prodItem");
@@ -326,7 +323,7 @@ let product = [],
     carbs = [];
 
 // add values to the array
-items.forEach(function(item){
+items.forEach((item)=>{
   product.push(item.innerHTML);
 	carbs.push(item.getAttribute("data-c"));
 })
