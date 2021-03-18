@@ -263,15 +263,15 @@ function updateCarbInRow(x) {
 }
 
 function delRow(tableId, x) {
-	const table = document.getElementById(tableId);
   document.getElementById(tableId).deleteRow(x.rowIndex);
-  if (tableId == "tDish" && table.tBodies[0].rows.length == 0) {
+  const rowcount = document.getElementById(tableId).tBodies[0].rows.length;
+  if (tableId == "tDish" && rowcount == 0) {
 		let btn = document.querySelector('#fillMealButton');
 		btn.disabled = true;
 		btn = document.getElementById(tableId).querySelector('#delRowsButton');
 		btn.disabled = true;
   }
-	if (tableId == "tMeal" && table.tBodies[0].rows.length == 0) {
+	if (tableId == "tMeal" && rowcount == 0) {
 		let btn = document.getElementById(tableId).querySelector('#delRowsButton');
 		btn.disabled = true;
   }
