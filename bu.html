@@ -266,24 +266,17 @@ function delRow(tableId, x) {
   document.getElementById(tableId).deleteRow(x.rowIndex);
   const rowcount = document.getElementById(tableId).tBodies[0].rows.length;
   if (tableId == "tDish" && rowcount == 0) {
-		let btn = document.querySelector('#fillMealButton');
-		btn.disabled = true;
-		btn = document.getElementById(tableId).querySelector('#delRowsButton');
-		btn.disabled = true;
+    document.querySelector('#fillMealButton').setAttribute("disabled", "disabled");
+    document.getElementById(tableId).querySelector('#delRowsButton').setAttribute("disabled", "disabled");
   }
 	if (tableId == "tMeal" && rowcount == 0) {
-		let btn = document.getElementById(tableId).querySelector('#delRowsButton');
-		btn.disabled = true;
+    document.getElementById(tableId).querySelector('#delRowsButton').setAttribute("disabled", "disabled");
   }
 }
 
 function dellRows(tableId) {
-	let tbodyRef = document.getElementById(tableId).tBodies[0];
-	tbodyRef.innerHTML = '';
-	if (tableId == "tDish") {
-		let btn = document.querySelector('#fillMealButton');
-		btn.disabled = true;
-	}
+  document.getElementById(tableId).tBodies[0].innerHTML = '';
+	if (tableId == "tDish") document.querySelector('#fillMealButton').setAttribute("disabled", "disabled");
 }
 
 Array.prototype.forEach.call(document.getElementsByClassName("caret"), function(item) {
