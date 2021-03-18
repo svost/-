@@ -280,10 +280,8 @@ function delRow(tableId, x) {
 function dellRows(tableId) {
 	let tbodyRef = document.getElementById(tableId).tBodies[0];
 	tbodyRef.innerHTML = '';
-	let btn = document.getElementById(tableId).querySelector('#delRowsButton');
-	btn.disabled = true;
 	if (tableId == "tDish") {
-		btn = document.querySelector('#fillMealButton');
+		let btn = document.querySelector('#fillMealButton');
 		btn.disabled = true;
 	}
 }
@@ -359,8 +357,8 @@ function pageInit() {
   //setup events for static objects
   addEvent(document.getElementById('carbInBuId'), 'change', updatecarbInBu);
   addEvent(document.getElementById('fillMealButton'), 'click', ()=>{fillTMealBody(); updateTableFooter("tMeal");});
-  addEvent(document.getElementById('tMeal').querySelector('#delRowsButton'), 'click', ()=>{dellRows("tMeal"); updateTableFooter("tMeal");});
-  addEvent(document.getElementById('tDish').querySelector('#delRowsButton'), 'click', ()=>{dellRows("tDish"); updateTableFooter("tDish");});
+  addEvent(document.getElementById('tMeal').querySelector('#delRowsButton'), 'click', function(){dellRows("tMeal"); updateTableFooter("tMeal"); this.disabled = true;});
+  addEvent(document.getElementById('tDish').querySelector('#delRowsButton'), 'click', function(){dellRows("tDish"); updateTableFooter("tDish"); this.disabled = true;});
 }
 
 pageInit();
