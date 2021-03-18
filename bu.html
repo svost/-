@@ -198,13 +198,12 @@ function updatecarbInBu() {
 }
 
 function updateMealWeight(x) {
-  let tBref = document.getElementById("tMeal").tBodies[0];
-	let weightRef = document.getElementById("tMeal").tBodies[0].rows[x.rowIndex-1].cells[1].getElementsByTagName('input')[0];
-  const xeAmount = parseFloat(tBref.rows[x.rowIndex-1].cells[4].getElementsByTagName('select')[0].value);
-	if (xeAmount == 0.0) return;
-  weightRef.value = Math.round((weightRef.value * xeAmount)/parseFloat(tBref.rows[x.rowIndex-1].cells[3].innerHTML));
-  tBref.rows[x.rowIndex-1].cells[2].innerHTML = (xeAmount * carbInBu).toFixed(1);
-  tBref.rows[x.rowIndex-1].cells[3].innerHTML = xeAmount;
+  let weightRef = x.cells[1].getElementsByTagName('input')[0];
+  const xeAmount = parseFloat(x.cells[4].getElementsByTagName('select')[0].value);
+  if (xeAmount == 0.0) return;
+  weightRef.value = Math.round((weightRef.value * xeAmount)/parseFloat(x.cells[3].innerHTML));
+  x.cells[2].innerHTML = (xeAmount * carbInBu).toFixed(1);
+  x.cells[3].innerHTML = xeAmount;
 }
 
 function processWChange(x) {
@@ -317,7 +316,7 @@ items.forEach(function(item){
         let rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
         addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
         addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
-        if (carbs[index] == 0.0) rowRef.cells[4].innerHTML = '';
+        if (carbs[index] == 0.0) rowRef.querySelector('select').setAttribute("disabled", "disabled");
         updateTableFooter('tMeal');
       }
       else {
