@@ -301,37 +301,37 @@ function dellRows(tableId) {
 	if (tableId == "tDish") document.querySelector('#fillMealButton').setAttribute("disabled", "disabled");
 }
 
-function fillTMealBodyFromList(idx) {
+function fillTMealRowFromList(name, carb) {
   let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
   if (btn.disabled == true) btn.disabled = false
   let tbodyRef = document.getElementById('tMeal').getElementsByTagName('tbody')[0];
   tbodyRef.insertRow().innerHTML =
-      "<td>" + product[idx] + "</td>"
+      "<td>" + name + "</td>"
     + "<td><input type='number' value='100' disabled=disabled></td>"
-    + "<td>" + carbs[idx] + "</td>"
-    + "<td>" + (carbs[idx]/carbInBu).toFixed(3) + "</td>"
+    + "<td>" + carb + "</td>"
+    + "<td>" + (carb/carbInBu).toFixed(3) + "</td>"
     + "<td><select><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
     + "<td><input class='delbutton' type='button' value='Удалить строку'></td>";
   let rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
   addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
-  if (carbs[idx] == 0.0) rowRef.querySelector('select').setAttribute("disabled", "disabled");
+  if (carb == 0.0) rowRef.querySelector('select').setAttribute("disabled", "disabled");
   updateTableFooter('tMeal');
 }
 
-function fillTDishBodyFromList(idx) {
+function fillTDishRowFromList(name, carb) {
   let btn = document.querySelector('#fillMealButton');
   if (btn.disabled == true) btn.disabled = false
   btn = document.getElementById('tDish').querySelector('#delRowsButton');
   if (btn.disabled == true) btn.disabled = false
   let tbodyRef = document.getElementById('tDish').getElementsByTagName('tbody')[0];
   tbodyRef.insertRow().innerHTML =
-      "<td>" + product[idx] + "</td>"
+      "<td>" + name + "</td>"
     + "<td><input type='number' value='100' min='1'></td>"
-    + "<td>" + carbs[idx] + "</td>"
-    + "<td>" + (carbs[idx]/carbInBu).toFixed(3) + "</td>"
+    + "<td>" + carb + "</td>"
+    + "<td>" + (carb/carbInBu).toFixed(3) + "</td>"
     + "<td><input class='delbutton' type='button' value='Удалить строку'></td>"
-    + "<td>" + carbs[idx] + "</td>";
+    + "<td>" + carb + "</td>";
   let rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
   addEvent(rowRef.querySelector('input'), 'change', ()=>{updateCarbInRow(rowRef); updateTableFooter("tDish");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tDish", rowRef); updateTableFooter("tDish");});
@@ -342,19 +342,10 @@ Array.prototype.forEach.call(document.getElementsByClassName("caret"), function(
   addEvent(item, 'click', function(){this.parentElement.querySelector(".nested").classList.toggle("active"); this.classList.toggle("caret-down");});
 });
 
-let items = document.querySelectorAll("#productUL #prodItem");
-let product = [],
-    carbs = [];
-
-// add values to the array
-items.forEach((item)=>{
-  product.push(item.innerHTML);
-	carbs.push(item.getAttribute("data-c"));
-})
-// apply event to array elements
-items.forEach(function(item){
-  addEvent(item, 'click', function(event){const idx = product.indexOf(this.innerHTML); event.ctrlKey ? fillTMealBodyFromList(idx) : fillTDishBodyFromList(idx);})
-})
+Array.prototype.forEach.call(document.querySelectorAll("#productUL #prodItem"), function(item) {
+  addEvent(item, 'click', function(event){
+    event.ctrlKey ? fillTMealRowFromList(this.innerHTML, this.getAttribute("data-c")) : fillTDishRowFromList(this.innerHTML, this.getAttribute("data-c"));})
+});
 
 function pageInit() {
   //setup events for static objects
