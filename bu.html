@@ -327,14 +327,9 @@ items.forEach((item)=>{
   product.push(item.innerHTML);
 	carbs.push(item.getAttribute("data-c"));
 })
-
-// get selected element index
+// apply event to array elements
 items.forEach(function(item){
-  item.onclick = function(event){
-    const index = product.indexOf(this.innerHTML);
-      if (event.ctrlKey) fillTMealBodyFromList(index);
-      else fillTDishBodyFromList(index);
-  };
+  addEvent(item, 'click', function(event){const idx = product.indexOf(this.innerHTML); event.ctrlKey ? fillTMealBodyFromList(idx) : fillTDishBodyFromList(idx);})
 })
 
 function pageInit() {
