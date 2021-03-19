@@ -260,7 +260,7 @@ function fillTMealBody() {
   addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
 	addEventCustomHint(rowRef.cells[1].getElementsByTagName("input")[0]);
-  if (srcrowRef.cells[2].innerHTML == 0.00) rowRef.cells[4].innerHTML = '';
+  if (srcrowRef.cells[2].innerHTML == 0.00) rowRef.querySelector('select').setAttribute("disabled", "disabled");
 	let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
 	if (btn.disabled == true) btn.disabled = false
 }
