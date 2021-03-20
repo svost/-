@@ -189,13 +189,6 @@ function addEvent(obj, type, fn) {
   }
 }
 
-window.onload = function() {
-	//костыль для стиля
-	const h = document.getElementById('tDish').rows[1].clientHeight;
-	let tMref = document.getElementById('tMeal');
-	tMref.rows[1].style.height = h + "px";
-}
-
 function addEventCustomHint(x) {
   addEvent(x, 'input', ()=>{
     if (x.validity.rangeUnderflow || x.validity.badInput || x.validity.typeMismatch || x.validity.stepMismatch) {
@@ -353,6 +346,8 @@ function pageInit() {
   addEvent(document.getElementById('fillMealButton'), 'click', ()=>{fillTMealBody(); updateTableFooter("tMeal");});
   addEvent(document.getElementById('tMeal').querySelector('#delRowsButton'), 'click', function(){dellRows("tMeal"); updateTableFooter("tMeal"); this.disabled = true;});
   addEvent(document.getElementById('tDish').querySelector('#delRowsButton'), 'click', function(){dellRows("tDish"); updateTableFooter("tDish"); this.disabled = true;});
+  //костыль для стиля
+  addEvent(window, 'load', ()=>{document.getElementById('tMeal').rows[1].style.height = document.getElementById('tDish').rows[1].clientHeight + "px";});
 }
 
 pageInit();
