@@ -258,17 +258,17 @@ function fillTMealBody() {
 	if (btn.disabled == true) btn.disabled = false
 }
 
-function updateTableFooter(tableId) {
+async function updateTableFooter(tableId) {
   let table = document.getElementById(tableId);
-  let sum = Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
-    return acc + parseInt(item.cells[1].getElementsByTagName("input")[0].value, 10)
-  },0);
-  table.lastElementChild.lastElementChild.cells[1].innerHTML = sum;
-  sum = Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
-    return acc + parseFloat(item.cells[2].innerHTML)
-  },0);
-  table.lastElementChild.lastElementChild.cells[2].innerHTML = (sum).toFixed(2);
-  table.lastElementChild.lastElementChild.cells[3].innerHTML = (sum/carbInBu).toFixed(3);
+  const [weight, carb] = await Promise.all([Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
+      return acc + parseInt(item.cells[1].getElementsByTagName("input")[0].value, 10)
+    },0), Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
+      return acc + parseFloat(item.cells[2].innerHTML)
+    },0)
+  ]);
+  table.lastElementChild.lastElementChild.cells[1].innerHTML = weight;
+  table.lastElementChild.lastElementChild.cells[2].innerHTML = (carb).toFixed(2);
+  table.lastElementChild.lastElementChild.cells[3].innerHTML = (carb/carbInBu).toFixed(3);
 }
 
 function updateCarbInRow(x) {
