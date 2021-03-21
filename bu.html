@@ -206,8 +206,7 @@ let carbInBu = 12.0;
 function updatecarbInBu() {
 	carbInBu = document.getElementById("carbInBuId").value;
   ["tDish", "tMeal"].forEach(function(table) {
-		let tBref = document.getElementById(table).tBodies[0];
-		Array.prototype.forEach.call(tBref.rows, function(item) {
+		Array.prototype.forEach.call(document.getElementById(table).tBodies[0].rows, function(item) {
 			item.cells[3].innerHTML = (parseFloat(item.cells[2].innerHTML)/carbInBu).toFixed(3)
     });
 		updateTableFooter(table);
@@ -238,26 +237,6 @@ function processWChange(x) {
 	else {
 		selectref.style.display = "none";
 	}
-}
-
-function fillTMealBody() {
-  const srcrowRef = document.getElementById("tDish").querySelector('tfoot tr');
-  let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
-  dst.insertRow().innerHTML =
-    "<td>Составное блюдо</td>"
-  + "<td><input type='number' value='" + srcrowRef.cells[1].innerHTML + "' min='1'></td>"
-	+ "<td>" + srcrowRef.cells[2].innerHTML + "</td>"
-	+ "<td>" + srcrowRef.cells[3].innerHTML + "</td>"
-	+ "<td><select><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
-	+ "<td><input class='delbutton' type='button' value='Удалить строку'></td>";
-  let rowRef = dst.rows[dst.rows.length-1];
-  addEvent(rowRef.querySelector('input'), 'change', ()=>processWChange(rowRef.querySelector('input')));
-  addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
-  addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
-	addEventCustomHint(rowRef.cells[1].getElementsByTagName("input")[0]);
-  if (srcrowRef.cells[2].innerHTML == 0.00) rowRef.querySelector('select').setAttribute("disabled", "disabled");
-	let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
-	if (btn.disabled == true) btn.disabled = false
 }
 
 async function updateTableFooter(tableId) {
@@ -296,6 +275,29 @@ function dellRows(tableId) {
 	if (tableId == "tDish") document.querySelector('#fillMealButton').setAttribute("disabled", "disabled");
 }
 
+const selectCell = "<td><select><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
+const delrowCell = "<td><input class='delbutton' type='button' value='Удалить строку'></td>";
+
+function fillTMealRowFromTDish() {
+  const srcrowRef = document.getElementById("tDish").querySelector('tfoot tr');
+  let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
+  dst.insertRow().innerHTML =
+      "<td>Составное блюдо</td>"
+    + "<td><input type='number' value='" + srcrowRef.cells[1].innerHTML + "' min='1'></td>"
+	  + "<td>" + srcrowRef.cells[2].innerHTML + "</td>"
+	  + "<td>" + srcrowRef.cells[3].innerHTML + "</td>"
+	  + selectCell
+	  + delrowCell;
+  let rowRef = dst.rows[dst.rows.length-1];
+  addEvent(rowRef.querySelector('input'), 'change', ()=>processWChange(rowRef.querySelector('input')));
+  addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
+  addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
+	addEventCustomHint(rowRef.cells[1].getElementsByTagName("input")[0]);
+  if (srcrowRef.cells[2].innerHTML == 0.00) rowRef.querySelector('select').setAttribute("disabled", "disabled");
+	let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
+	if (btn.disabled == true) btn.disabled = false
+}
+
 function fillTMealRowFromList(name, carb) {
   let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
   if (btn.disabled == true) btn.disabled = false
@@ -305,8 +307,8 @@ function fillTMealRowFromList(name, carb) {
     + "<td><input type='number' value='100' disabled=disabled></td>"
     + "<td>" + carb + "</td>"
     + "<td>" + (carb/carbInBu).toFixed(3) + "</td>"
-    + "<td><select><option selected=true disabled=disabled value=0.0>ХЕ0.0</option><option value=0.5>ХЕ0.5</option><option value=1>ХЕ1</option><option value=1.5>ХЕ1.5</option><option value=2>ХЕ2</option><option value=2.5>ХЕ2.5</option><option value=3>ХЕ3</option><option value=3.5>ХЕ3.5</option></select></td>"
-    + "<td><input class='delbutton' type='button' value='Удалить строку'></td>";
+    + selectCell
+    + delrowCell;
   let rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
   addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
@@ -325,7 +327,7 @@ function fillTDishRowFromList(name, carb) {
     + "<td><input type='number' value='100' min='1'></td>"
     + "<td>" + carb + "</td>"
     + "<td>" + (carb/carbInBu).toFixed(3) + "</td>"
-    + "<td><input class='delbutton' type='button' value='Удалить строку'></td>"
+    + delrowCell
     + "<td>" + carb + "</td>";
   let rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
   addEvent(rowRef.querySelector('input'), 'change', ()=>{updateCarbInRow(rowRef); updateTableFooter("tDish");});
@@ -345,7 +347,7 @@ Array.prototype.forEach.call(document.querySelectorAll("#productUL #prodItem"), 
 function pageInit() {
   //setup events for static objects
   addEvent(document.getElementById('carbInBuId'), 'change', updatecarbInBu);
-  addEvent(document.getElementById('fillMealButton'), 'click', ()=>{fillTMealBody(); updateTableFooter("tMeal");});
+  addEvent(document.getElementById('fillMealButton'), 'click', ()=>{fillTMealRowFromTDish(); updateTableFooter("tMeal");});
   addEvent(document.getElementById('tMeal').querySelector('#delRowsButton'), 'click', function(){dellRows("tMeal"); updateTableFooter("tMeal"); this.disabled = true;});
   addEvent(document.getElementById('tDish').querySelector('#delRowsButton'), 'click', function(){dellRows("tDish"); updateTableFooter("tDish"); this.disabled = true;});
   //костыль для стиля
