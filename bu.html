@@ -239,17 +239,18 @@ function processWChange(x) {
 	}
 }
 
-async function updateTableFooter(tableId) {
+function updateTableFooter(tableId) {
   let table = document.getElementById(tableId);
-  const [weight, carb] = await Promise.all([Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
-      return acc + parseInt(item.cells[1].getElementsByTagName("input")[0].value, 10)
-    },0), Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
-      return acc + parseFloat(item.cells[2].textContent)
-    },0)
-  ]);
-  table.lastElementChild.lastElementChild.cells[1].textContent = weight;
-  table.lastElementChild.lastElementChild.cells[2].textContent = (carb).toFixed(2);
-  table.lastElementChild.lastElementChild.cells[3].textContent = (carb/carbInBu).toFixed(3);
+  Promise.all([Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
+        return acc + parseInt(item.cells[1].getElementsByTagName("input")[0].value, 10)
+      },0), Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
+        return acc + parseFloat(item.cells[2].textContent)
+      },0)
+  ]).then(values => { const [weight, carb] = values;
+    table.lastElementChild.lastElementChild.cells[1].textContent = weight;
+    table.lastElementChild.lastElementChild.cells[2].textContent = (carb).toFixed(2);
+    table.lastElementChild.lastElementChild.cells[3].textContent = (carb/carbInBu).toFixed(3);
+  });
 }
 
 function updateCarbInRow(x) {
@@ -281,10 +282,10 @@ function fillTMealRowFromTDish() {
   dst.insertRow().innerHTML =
       "<td>Составное блюдо</td>"
     + "<td><input type='number' value='" + srcrowRef.cells[1].textContent + "' min='1'></td>"
-	  + "<td>" + srcrowRef.cells[2].textContent + "</td>"
-	  + "<td>" + srcrowRef.cells[3].textContent + "</td>"
-	  + selectCell
-	  + delrowCell;
+    + "<td>" + srcrowRef.cells[2].textContent + "</td>"
+    + "<td>" + srcrowRef.cells[3].textContent + "</td>"
+    + selectCell
+    + delrowCell;
   let rowRef = dst.rows[dst.rows.length-1];
   addEvent(rowRef.querySelector('input'), 'change', ()=>processWChange(rowRef.querySelector('input')));
   addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
