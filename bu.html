@@ -207,7 +207,7 @@ function updatecarbInBu() {
 	carbInBu = document.getElementById("carbInBuId").value;
   ["tDish", "tMeal"].forEach(function(table) {
 		Array.prototype.forEach.call(document.getElementById(table).tBodies[0].rows, function(item) {
-			item.cells[3].innerHTML = (parseFloat(item.cells[2].innerHTML)/carbInBu).toFixed(3)
+			item.cells[3].textContent = (parseFloat(item.cells[2].textContent)/carbInBu).toFixed(3)
     });
 		updateTableFooter(table);
   })
@@ -219,9 +219,9 @@ function updateMealWeight(x) {
   let weightRef = x.cells[1].getElementsByTagName('input')[0];
   const xeAmount = parseFloat(x.cells[4].getElementsByTagName('select')[0].value);
   if (xeAmount == 0.0) return;
-  weightRef.value = Math.round((weightRef.value * xeAmount)/parseFloat(x.cells[3].innerHTML));
-  x.cells[2].innerHTML = (xeAmount * carbInBu).toFixed(1);
-  x.cells[3].innerHTML = xeAmount;
+  weightRef.value = Math.round((weightRef.value * xeAmount)/parseFloat(x.cells[3].textContent));
+  x.cells[2].textContent = (xeAmount * carbInBu).toFixed(1);
+  x.cells[3].textContent = xeAmount;
 }
 
 function processWChange(x) {
@@ -244,18 +244,18 @@ async function updateTableFooter(tableId) {
   const [weight, carb] = await Promise.all([Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
       return acc + parseInt(item.cells[1].getElementsByTagName("input")[0].value, 10)
     },0), Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
-      return acc + parseFloat(item.cells[2].innerHTML)
+      return acc + parseFloat(item.cells[2].textContent)
     },0)
   ]);
-  table.lastElementChild.lastElementChild.cells[1].innerHTML = weight;
-  table.lastElementChild.lastElementChild.cells[2].innerHTML = (carb).toFixed(2);
-  table.lastElementChild.lastElementChild.cells[3].innerHTML = (carb/carbInBu).toFixed(3);
+  table.lastElementChild.lastElementChild.cells[1].textContent = weight;
+  table.lastElementChild.lastElementChild.cells[2].textContent = (carb).toFixed(2);
+  table.lastElementChild.lastElementChild.cells[3].textContent = (carb/carbInBu).toFixed(3);
 }
 
 function updateCarbInRow(x) {
 	if (x.cells[1].getElementsByTagName("input")[0].validity.valid === false) x.cells[1].getElementsByTagName("input")[0].value = 100;
-  x.cells[2].innerHTML = ((x.cells[1].getElementsByTagName("input")[0].value * parseFloat(x.cells[5].innerHTML))/100.0).toFixed(2);
-  x.cells[3].innerHTML = (parseFloat(x.cells[2].innerHTML)/carbInBu).toFixed(3);
+  x.cells[2].textContent = ((x.cells[1].getElementsByTagName("input")[0].value * parseFloat(x.cells[5].textContent))/100.0).toFixed(2);
+  x.cells[3].textContent = (parseFloat(x.cells[2].textContent)/carbInBu).toFixed(3);
 }
 
 function delRow(tableId, x) {
@@ -267,7 +267,8 @@ function delRow(tableId, x) {
 }
 
 function dellRows(tableId) {
-  document.getElementById(tableId).tBodies[0].innerHTML = '';
+  let tbodyRef = document.getElementById(tableId).tBodies[0];
+  while (tbodyRef.firstChild) tbodyRef.removeChild(tbodyRef.firstChild);
 	if (tableId == "tDish") document.querySelector('#fillMealButton').setAttribute("disabled", "disabled");
 }
 
@@ -279,9 +280,9 @@ function fillTMealRowFromTDish() {
   let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
   dst.insertRow().innerHTML =
       "<td>Составное блюдо</td>"
-    + "<td><input type='number' value='" + srcrowRef.cells[1].innerHTML + "' min='1'></td>"
-	  + "<td>" + srcrowRef.cells[2].innerHTML + "</td>"
-	  + "<td>" + srcrowRef.cells[3].innerHTML + "</td>"
+    + "<td><input type='number' value='" + srcrowRef.cells[1].textContent + "' min='1'></td>"
+	  + "<td>" + srcrowRef.cells[2].textContent + "</td>"
+	  + "<td>" + srcrowRef.cells[3].textContent + "</td>"
 	  + selectCell
 	  + delrowCell;
   let rowRef = dst.rows[dst.rows.length-1];
@@ -289,7 +290,7 @@ function fillTMealRowFromTDish() {
   addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
 	addEventCustomHint(rowRef.cells[1].getElementsByTagName("input")[0]);
-  if (srcrowRef.cells[2].innerHTML == 0.00) rowRef.querySelector('select').setAttribute("disabled", "disabled");
+  if (srcrowRef.cells[2].textContent == 0.00) rowRef.querySelector('select').setAttribute("disabled", "disabled");
 	let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
 	if (btn.disabled == true) btn.disabled = false
 }
@@ -337,7 +338,7 @@ Array.prototype.forEach.call(document.getElementsByClassName("caret"), function(
 
 Array.prototype.forEach.call(document.querySelectorAll("#productUL #prodItem"), function(item) {
   addEvent(item, 'click', function(event){
-    event.ctrlKey ? fillTMealRowFromList(this.innerHTML, this.getAttribute("data-c")) : fillTDishRowFromList(this.innerHTML, this.getAttribute("data-c"));})
+    event.ctrlKey ? fillTMealRowFromList(this.textContent, this.getAttribute("data-c")) : fillTDishRowFromList(this.textContent, this.getAttribute("data-c"));})
 });
 
 function pageInit() {
