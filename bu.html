@@ -216,7 +216,7 @@ function updatecarbInBu() {
 }
 
 function updateMealWeight(x) {
-  let weightRef = x.cells[1].getElementsByTagName('input')[0];
+  const weightRef = x.cells[1].getElementsByTagName('input')[0];
   const xeAmount = parseFloat(x.cells[4].getElementsByTagName('select')[0].value);
   if (xeAmount == 0.0) return;
   weightRef.value = Math.round((weightRef.value * xeAmount)/parseFloat(x.cells[3].textContent));
@@ -225,11 +225,11 @@ function updateMealWeight(x) {
 }
 
 function processWChange(x) {
-  let selectref = x.parentElement.parentElement.cells[4].getElementsByTagName("select")[0];
 	if (x.parentElement.parentElement.cells[4].innerHTML == '') {
 		updateTableFooter("tMeal");
 		return;
 	}
+  const selectref = x.parentElement.parentElement.cells[4].getElementsByTagName("select")[0];
 	if (x.validity.valid) {
 		if (selectref.style.display === "none")	selectref.style.display = "block";
 		updateTableFooter("tMeal");
@@ -240,7 +240,7 @@ function processWChange(x) {
 }
 
 function updateTableFooter(tableId) {
-  let table = document.getElementById(tableId);
+  const table = document.getElementById(tableId);
   Promise.all([Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
         return acc + parseInt(item.cells[1].getElementsByTagName("input")[0].value, 10)
       },0), Array.prototype.reduce.call(table.tBodies[0].rows, function(acc, item) {
@@ -268,7 +268,7 @@ function delRow(tableId, x) {
 }
 
 function dellRows(tableId) {
-  let tbodyRef = document.getElementById(tableId).tBodies[0];
+  const tbodyRef = document.getElementById(tableId).tBodies[0];
   while (tbodyRef.firstChild) tbodyRef.removeChild(tbodyRef.firstChild);
 	if (tableId == "tDish") document.querySelector('#fillMealButton').setAttribute("disabled", "disabled");
 }
@@ -278,7 +278,7 @@ const delrowCell = "<td><input class='delbutton' type='button' value='Удали
 
 function fillTMealRowFromTDish() {
   const srcrowRef = document.getElementById("tDish").querySelector('tfoot tr');
-  let dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
+  const dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
   dst.insertRow().innerHTML =
       "<td>Составное блюдо</td>"
     + "<td><input type='number' value='" + srcrowRef.cells[1].textContent + "' min='1'></td>"
@@ -286,20 +286,20 @@ function fillTMealRowFromTDish() {
     + "<td>" + srcrowRef.cells[3].textContent + "</td>"
     + selectCell
     + delrowCell;
-  let rowRef = dst.rows[dst.rows.length-1];
+  const rowRef = dst.rows[dst.rows.length-1];
   addEvent(rowRef.querySelector('input'), 'change', ()=>processWChange(rowRef.querySelector('input')));
   addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
 	addEventCustomHint(rowRef.cells[1].getElementsByTagName("input")[0]);
   if (srcrowRef.cells[2].textContent == 0.00) rowRef.querySelector('select').setAttribute("disabled", "disabled");
-	let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
+	const btn = document.getElementById('tMeal').querySelector('#delRowsButton');
 	if (btn.disabled == true) btn.disabled = false
 }
 
 function fillTMealRowFromList(name, carb) {
-  let btn = document.getElementById('tMeal').querySelector('#delRowsButton');
+  const btn = document.getElementById('tMeal').querySelector('#delRowsButton');
   if (btn.disabled == true) btn.disabled = false
-  let tbodyRef = document.getElementById('tMeal').getElementsByTagName('tbody')[0];
+  const tbodyRef = document.getElementById('tMeal').getElementsByTagName('tbody')[0];
   tbodyRef.insertRow().innerHTML =
       "<td>" + name + "</td>"
     + "<td><input type='number' value='100' disabled=disabled></td>"
@@ -307,7 +307,7 @@ function fillTMealRowFromList(name, carb) {
     + "<td>" + (carb/carbInBu).toFixed(3) + "</td>"
     + selectCell
     + delrowCell;
-  let rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
+  const rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
   addEvent(rowRef.querySelector('select'), 'change', ()=>{updateMealWeight(rowRef); updateTableFooter("tMeal");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
   if (carb == 0.0) rowRef.querySelector('select').setAttribute("disabled", "disabled");
@@ -319,7 +319,7 @@ function fillTDishRowFromList(name, carb) {
   if (btn.disabled == true) btn.disabled = false
   btn = document.getElementById('tDish').querySelector('#delRowsButton');
   if (btn.disabled == true) btn.disabled = false
-  let tbodyRef = document.getElementById('tDish').getElementsByTagName('tbody')[0];
+  const tbodyRef = document.getElementById('tDish').getElementsByTagName('tbody')[0];
   tbodyRef.insertRow().innerHTML =
       "<td>" + name + "</td>"
     + "<td><input type='number' value='100' min='1'></td>"
@@ -327,7 +327,7 @@ function fillTDishRowFromList(name, carb) {
     + "<td>" + (carb/carbInBu).toFixed(3) + "</td>"
     + delrowCell
     + "<td>" + carb + "</td>";
-  let rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
+  const rowRef = tbodyRef.rows[tbodyRef.rows.length-1];
   addEvent(rowRef.querySelector('input'), 'change', ()=>{updateCarbInRow(rowRef); updateTableFooter("tDish");});
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tDish", rowRef); updateTableFooter("tDish");});
   updateTableFooter('tDish');
