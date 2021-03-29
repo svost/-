@@ -49,6 +49,11 @@ ul, #productUL{list-style-type:none}
 
 <p>Углеводов (Carbohydrate) в одной хлебной единице: <td><select id="carbInBuId"><option selected=true value=12>12</option><option value=11>11</option><option value=10>10</option></select></td></p>
 
+<table id="tHint">
+  <tr><td>Нужно съесть</td><td>0.25</td><td>0.5</td><td>0.75</td><td>1.0</td><td>1.25</td><td>1.5</td><td>1.75</td><td>2.0</td><td>2.25</td><td>2.5</td><td>2.75</td><td>3.0</td></tr>
+  <tr><td><input type='number' value='11.2' step='0.1' min='0.1' max='100'></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
 <div class="container"><div class="contcells"><div>
 <table id="tDish">
   <caption>Приготовить блюдо (клик по продукту из списка)</caption>
@@ -183,6 +188,13 @@ function addEventCustomHint(x) {
 }
 
 let carbInBu = 12.0;
+
+function updateTHint() {
+  const tbodyRef = document.getElementById("tHint").tBodies[0];
+  for (let idx = 1; idx < 13; idx++) {
+    tbodyRef.rows[1].cells[idx].textContent = Math.round(100*carbInBu*parseFloat(tbodyRef.rows[0].cells[idx].textContent)/parseFloat(tbodyRef.rows[1].cells[0].getElementsByTagName('input')[0].value));
+  }
+}
 
 function updatecarbInBu() {
 	carbInBu = document.getElementById("carbInBuId").value;
@@ -325,10 +337,12 @@ Array.prototype.forEach.call(document.querySelectorAll("#productUL #prodItem"), 
 
 function pageInit() {
   //setup events for static objects
-  addEvent(document.getElementById('carbInBuId'), 'change', updatecarbInBu);
+  addEvent(document.getElementById('carbInBuId'), 'change', ()=>{updatecarbInBu(); updateTHint();});
   addEvent(document.getElementById('fillMealButton'), 'click', ()=>{fillTMealRowFromTDish(); updateTableFooter("tMeal");});
   addEvent(document.getElementById('tMeal').querySelector('#delRowsButton'), 'click', function(){dellRows("tMeal"); updateTableFooter("tMeal"); this.disabled = true;});
   addEvent(document.getElementById('tDish').querySelector('#delRowsButton'), 'click', function(){dellRows("tDish"); updateTableFooter("tDish"); this.disabled = true;});
+  addEvent(document.getElementById('tHint').getElementsByTagName('input')[0], 'change', updateTHint);
+  addEvent(window, 'load', updateTHint);
   //костыль для стиля
   addEvent(window, 'load', ()=>{document.getElementById('tMeal').rows[1].style.height = document.getElementById('tDish').rows[1].clientHeight + "px";});
 }
