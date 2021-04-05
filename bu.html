@@ -201,7 +201,7 @@ function updateScale(direction) {
     Array.prototype.slice.call(trowRef.cells, 1).forEach((el, idx) => {el.textContent = (step*(idx+1)).toFixed(1)});
     updateTHint();
   }
-  if (direction > 0 && step > 0.1) {
+  else if (direction > 0 && step > 0.1) {
     step = parseFloat(trowRef.cells[1].textContent) - 0.1;
     Array.prototype.slice.call(trowRef.cells, 1).forEach((el, idx) => {el.textContent = (step*(idx+1)).toFixed(1)});
     updateTHint();
