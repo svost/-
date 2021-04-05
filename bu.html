@@ -211,9 +211,8 @@ function updateScale(direction) {
 function updateTHint() {
   const tbodyRef = document.getElementById("tHint").tBodies[0];
   const coef = 100*carbInBu/parseFloat(tbodyRef.rows[1].cells[0].getElementsByTagName('input')[0].value);
-  for (let idx = 1; idx < 13; idx++) {
-    tbodyRef.rows[1].cells[idx].textContent = Math.round(parseFloat(tbodyRef.rows[0].cells[idx].textContent)*coef);
-  }
+  Array.prototype.slice.call(tbodyRef.rows[1].cells, 1).forEach((el, idx) => {
+    el.textContent = Math.round(parseFloat(tbodyRef.rows[0].cells[idx+1].textContent)*coef);});
 }
 
 function updatecarbInBu() {
