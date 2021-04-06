@@ -362,7 +362,7 @@ function pageInit() {
   addEvent(document.getElementById('tDish').querySelector('#delRowsButton'), 'click', function(){dellRows("tDish"); updateTableFooter("tDish"); this.disabled = true;});
   addEvent(document.getElementById('tHint').getElementsByTagName('input')[0], 'change', updateTHint);
   addEvent(window, 'load', updateTHint);
-  addEvent(document.getElementById("tHint").tBodies[0].rows[0], 'wheel', (event)=>{updateScale(event.deltaY)});
+  addEvent(document.getElementById("tHint").tBodies[0].rows[0], 'wheel', (event)=>{updateScale(event.deltaY); event.preventDefault();});
   //костыль для стиля
   addEvent(window, 'load', ()=>{document.getElementById('tMeal').rows[1].style.height = document.getElementById('tDish').rows[1].clientHeight + "px";});
 }
