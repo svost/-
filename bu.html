@@ -289,8 +289,8 @@ const selectCell = "<td><select><option selected=true disabled=disabled value=0.
 const delrowCell = "<td><input class='delbutton' type='button' value='Удалить строку'></td>";
 
 function fillTMealRowFromTDish() {
-  const srcrowRef = document.getElementById("tDish").querySelector('tfoot tr');
-  const dst = document.getElementById("tMeal").getElementsByTagName('tbody')[0];
+  const srcrowRef = document.querySelector('#tDish tfoot tr');
+  const dst = document.querySelector('#tMeal tbody');
   dst.insertRow().innerHTML =
       "<td>Составное блюдо</td>"
     + "<td><input type='number' value='" + srcrowRef.cells[1].textContent + "' min='1'></td>"
@@ -304,14 +304,14 @@ function fillTMealRowFromTDish() {
   addEvent(rowRef.querySelector('.delbutton'), 'click', ()=>{delRow("tMeal", rowRef); updateTableFooter("tMeal");});
 	addEventCustomHint(rowRef.cells[1].getElementsByTagName("input")[0]);
   if (srcrowRef.cells[2].textContent == 0.00) rowRef.querySelector('select').setAttribute("disabled", "disabled");
-	const btn = document.getElementById('tMeal').querySelector('#delRowsButton');
+	const btn = document.querySelector('#tMeal #delRowsButton');
 	if (btn.disabled == true) btn.disabled = false
 }
 
 function fillTMealRowFromList(name, carb) {
-  const btn = document.getElementById('tMeal').querySelector('#delRowsButton');
+  const btn = document.querySelector('#tMeal #delRowsButton');
   if (btn.disabled == true) btn.disabled = false
-  const tbodyRef = document.getElementById('tMeal').getElementsByTagName('tbody')[0];
+  const tbodyRef = document.querySelector('#tMeal tbody');
   tbodyRef.insertRow().innerHTML =
       "<td>" + name + "</td>"
     + "<td><input type='number' value='100' disabled=disabled></td>"
@@ -329,9 +329,9 @@ function fillTMealRowFromList(name, carb) {
 function fillTDishRowFromList(name, carb) {
   let btn = document.querySelector('#fillMealButton');
   if (btn.disabled == true) btn.disabled = false
-  btn = document.getElementById('tDish').querySelector('#delRowsButton');
+  btn = document.querySelector('#tDish #delRowsButton');
   if (btn.disabled == true) btn.disabled = false
-  const tbodyRef = document.getElementById('tDish').getElementsByTagName('tbody')[0];
+  const tbodyRef = document.querySelector('#tDish tbody');
   tbodyRef.insertRow().innerHTML =
       "<td>" + name + "</td>"
     + "<td><input type='number' value='100' min='1'></td>"
@@ -358,8 +358,8 @@ function pageInit() {
   //setup events for static objects
   addEvent(document.getElementById('carbInBuId'), 'change', ()=>{updatecarbInBu(); updateTHint();});
   addEvent(document.getElementById('fillMealButton'), 'click', ()=>{fillTMealRowFromTDish(); updateTableFooter("tMeal");});
-  addEvent(document.getElementById('tMeal').querySelector('#delRowsButton'), 'click', function(){dellRows("tMeal"); updateTableFooter("tMeal"); this.disabled = true;});
-  addEvent(document.getElementById('tDish').querySelector('#delRowsButton'), 'click', function(){dellRows("tDish"); updateTableFooter("tDish"); this.disabled = true;});
+  addEvent(document.querySelector('#tMeal #delRowsButton'), 'click', function(){dellRows("tMeal"); updateTableFooter("tMeal"); this.disabled = true;});
+  addEvent(document.querySelector('#tDish #delRowsButton'), 'click', function(){dellRows("tDish"); updateTableFooter("tDish"); this.disabled = true;});
   addEvent(document.getElementById('tHint').getElementsByTagName('input')[0], 'change', updateTHint);
   addEvent(window, 'load', updateTHint);
   addEvent(document.getElementById("tHint").tBodies[0].rows[0], 'wheel', (event)=>{updateScale(event.deltaY); event.preventDefault();});
